@@ -1,0 +1,13 @@
+.input-size {
+  width: 25rem; /* Tamaño deseado */
+  height: 3rem;
+}
+
+.h-10vh {
+    height: 10vh;
+}
+
+.h-90vh {
+    height: 90vh;
+}
+

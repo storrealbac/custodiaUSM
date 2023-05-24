@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+
+  <body
+    x-data="{ activeTab: 'category1'}"
+  >
+    <nav class="bg-gray-800">
+      <div class="container mx-auto grid grid-cols-5 h-10vh">
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category1'"
+          :class="{ 'text-gray-300': activeTab === 'category1' }"
+        >
+          Categoría 1
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category2'"
+          :class="{ 'text-gray-300': activeTab === 'category2' }"
+        >
+          Categoría 2
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category3'"
+          :class="{ 'text-gray-300': activeTab === 'category3' }"
+        >
+          Categoría 3
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category4'"
+          :class="{ 'text-gray-300': activeTab === 'category4' }"
+        >
+          Categoría 4
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category5'"
+          :class="{ 'text-gray-300': activeTab === 'category5' }"
+        >
+          Categoría 5
+        </button>
+      </div>
+    </nav>
+
+    <div class="flex h-90vh">
+      <div class="m-auto">
+        <!-- Agregar usuario -->
+        <div id="category1" x-show="activeTab === 'category1'">
+          <div class="flex justify-center items-center">
+            <div class="grid grid-cols-3 gap-4 bg-blue-200 p-6 rounded-lg">
+              <div class="col">
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="nombre" class="text-gray-700 font-bold mb-2"
+                    >Nombre:</label
+                  >
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="apellido" class="text-gray-700 font-bold mb-2"
+                    >Apellido:</label
+                  >
+                  <input
+                    type="text"
+                    id="apellido"
+                    name="apellido"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="casillero" class="text-gray-700 font-bold mb-2"
+                    >Casillero:</label
+                  >
+                  <input
+                    type="text"
+                    id="casillero"
+                    name="casillero"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="entrada" class="text-gray-700 font-bold mb-2"
+                    >Horario de Entrada:</label
+                  >
+                  <input
+                    type="text"
+                    id="entrada"
+                    name="entrada"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="salida" class="text-gray-700 font-bold mb-2"
+                    >Horario de Salida:</label
+                  >
+                  <input
+                    type="text"
+                    id="salida"
+                    name="salida"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="observacion" class="text-gray-700 font-bold mb-2"
+                    >Observación:</label
+                  >
+                  <input
+                    type="text"
+                    id="observacion"
+                    name="observacion"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="correo" class="text-gray-700 font-bold mb-2"
+                    >Correo:</label
+                  >
+                  <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+                <div class="flex flex-col mb-4 h-20">
+                  <label for="celular" class="text-gray-700 font-bold mb-2"
+                    >Celular:</label
+                  >
+                  <input
+                    type="tel"
+                    id="celular"
+                    name="celular"
+                    class="border border-gray-300 rounded-md p-2 input-size"
+                  />
+                </div>
+                <div x-data="formFilled" class="flex flex-col h-20">
+                  <button
+                    x-bind:disabled="disabled"
+                    class="mt-auto bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                    @click="alert('Hola')"
+                  >
+                    Registrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="category2" x-show="activeTab === 'category2'">
+          <h1 class="text-3xl font-bold text-center mt-8">
+            Contenido de la Categoría 2
+          </h1>
+        </div>
+
+        <div id="category3" x-show="activeTab === 'category3'">
+          <h1 class="text-3xl font-bold text-center mt-8">
+            Contenido de la Categoría 3
+          </h1>
+        </div>
+
+        <div id="category4" x-show="activeTab === 'category4'">
+          <h1 class="text-3xl font-bold text-center mt-8">
+            Contenido de la Categoría 4
+          </h1>
+        </div>
+
+        <div id="category5" x-show="activeTab === 'category5'">
+          <h1 class="text-3xl font-bold text-center mt-8">
+            Contenido de la Categoría 5
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="scripts.js"></script>
+  </body>
+</html>
