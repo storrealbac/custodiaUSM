@@ -1,0 +1,22 @@
+{
+  "name": "custodiausm",
+  "version": "1.0.0",
+  "description": "Un servicio para custodia que permite una mejor organizacion",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storrealbac/custodiaUSM.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/storrealbac/custodiaUSM/issues"
+  },
+  "homepage": "https://github.com/storrealbac/custodiaUSM#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

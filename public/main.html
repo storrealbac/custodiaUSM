@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+
+  <body
+    x-data="{ activeTab: 'category1'}"
+  >
+    <nav class="bg-gray-800">
+      <div class="container mx-auto grid grid-cols-5 h-10vh">
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category1'"
+          :class="{ 'text-gray-300': activeTab === 'category1' }"
+        >
+          Añadir usuario
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category2'"
+          :class="{ 'text-gray-300': activeTab === 'category2' }"
+        >
+          Usuarios activos
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category3'"
+          :class="{ 'text-gray-300': activeTab === 'category3' }"
+        >
+          Penalizados
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category4'"
+          :class="{ 'text-gray-300': activeTab === 'category4' }"
+        >
+          Descargar informe
+        </button>
+
+        <button
+          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
+          @click="activeTab = 'category5'"
+          :class="{ 'text-gray-300': activeTab === 'category5' }"
+        >
+          Cerrar sesion
+        </button>
+      </div>
+    </nav>
+
+    <div class="flex h-90vh">
+      <div class="m-auto">
+        <!-- Agregar usuario -->
+        <div id="category1" x-data="addUserComponent" x-show="activeTab === 'category1'">
+          <div x-html="html_data"></div>
+        </div>
+
+        <div id="category2" x-data="activeUsersComponent" x-show="activeTab === 'category2'">
+          <div x-html="html_data"></div>
+        </div>
+
+        <div id="category3" x-data="penalizedUsersComponent" x-show="activeTab === 'category3'">
+          <div x-html="html_data"></div>
+        </div>
+
+        <div id="category4" x-data="downloadReportComponent" x-show="activeTab === 'category4'">
+          <div x-html="html_data"></div>
+        </div>
+
+        <div id="category5" x-data="signOutComponent" x-show="activeTab === 'category5'">
+          <div x-html="html_data"></div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <script src="main.js"></script>
+  </body>
+</html>
