@@ -1,1 +1,98 @@
-<p> activeUsers </p>
+<div class="w-screen" x-data="activeUsers">
+  <div class="grid grid-cols-12">
+    <div
+      class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Casillero
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Rol
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Nombre
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Celular
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Correo
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Horario Entrada
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2"
+    >
+      Horario Salida
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2 text-center"
+    >
+      Retiro
+    </div>
+    <div
+      class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2 text-center"
+    >
+      Editar
+    </div>
+
+    <!-- Todas las filas -->
+
+    <template x-for="row in data" :key="row.id">
+      <div class="fila grid grid-cols-12 col-span-12">
+        <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+          <p x-text="row.casillero"></p>
+        </div>
+        <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+          <p x-text="row.rol"></px>
+        </div>
+        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
+          <p x-text="row.nombre"></p>
+        </div>
+        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
+          <p x-text="row.celular"></p>
+        </div>
+        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
+          <p x-text="row.correo"></p>
+        </div>
+        <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+          <p x-text="row.entrada"></p>
+        </div>
+        <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+          <p x-text="row.salida"></p>
+        </div>
+
+        <div
+          class="border-b border-gray-300 border-blue-700 col-span-1 flex justify-center"
+        >
+          <button
+            class="btn bg-blue-500 text-white font-bold text-left p-2 rounded-md"
+          >
+            Retirar
+          </button>
+        </div>
+        <div
+          class="border-b border-gray-300 border-blue-700 col-span-1 flex justify-center"
+        >
+          <button
+            class="btn bg-blue-500 text-white font-bold text-left p-2 rounded-md"
+          >
+            Editar
+          </button>
+        </div>
+      </div>
+    </template>
+
+    </div>
+  </div>
+</div>
