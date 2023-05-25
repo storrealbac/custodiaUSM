@@ -102,6 +102,16 @@ document.addEventListener('alpine:init', () => {
   Alpine.data("activeUsers", () => ({
     data: dummyData,
 
+    retirar: function(row) {
+      // id, casillero, rol, nombre, correo, celular, entrada, salida
+      // Recuerda que tienes que usarlo como si fuera un diccionario
+    },
+
+    editar: function(row) {
+      let row_data = row.__raw;
+      console.log("Editar", row_data)
+    }
+
   }));
 
   // Tab addUser
