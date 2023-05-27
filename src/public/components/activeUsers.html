@@ -1,4 +1,4 @@
-<div class="w-screen" x-data="activeUsers">
+<div class="w-screen" x-data="activeUsers" x-init="onMount()">
   <div class="grid grid-cols-12">
     <div
       class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2"
@@ -48,7 +48,7 @@
 
     <!-- Todas las filas -->
 
-      <template x-for="row in data" :key="row.id">
+      <template x-for="row in data" :key="row._id">
         <div class="fila grid grid-cols-12 col-span-12">
           <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
             <p x-text="row.casillero"></p>

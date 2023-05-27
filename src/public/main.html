@@ -10,8 +10,8 @@
   <body
     x-data="{ activeTab: 'category1'}"
   >
-    <nav class="bg-gray-800">
-      <div class="container mx-auto grid grid-cols-5 h-10vh">
+    <nav class="bg-gray-800 ">
+      <div class="container mx-auto grid grid-cols-5 h-10vh ">
         <button
           class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
           @click="activeTab = 'category1'"
@@ -61,11 +61,11 @@
           <div x-html="html_data"></div>
         </div>
 
-        <div class="h-90vh w-full" id="category2" x-data="activeUsersComponent" x-show="activeTab === 'category2'">
+        <div class="h-90vh" id="category2" x-data="activeUsersComponent" x-show="activeTab === 'category2'">
           <div x-html="html_data"></div>
         </div>
 
-        <div class="h-90vh w-full" id="category3" x-data="penalizedUsersComponent" x-show="activeTab === 'category3'">
+        <div class="h-90vh" id="category3" x-data="penalizedUsersComponent" x-show="activeTab === 'category3'">
           <div x-html="html_data"></div>
         </div>
 

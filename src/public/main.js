@@ -1,77 +1,83 @@
 const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-let dummyData = [
-  {
-    id: 1,
-    casillero: "1",
-    rol: "202173027-3",
-    nombre: "Sebastian",
-    correo: "sebastian.torrealba@usm.cl",
-    celular: "9560982387",
-    entrada: "10am",
-    salida: "5pm"
-  },
-  {
-    id: 2,
-    casillero: "2",
-    rol: "22342327-3",
-    nombre: "Seba",
-    correo: "sebasrrealba@usm.cl",
-    celular: "9560982387",
-    entrada: "12am",
-    salida: "5pm"
-  },
-  {
-    id: 3,
-    casillero: "3",
-    rol: "300073027-3",
-    nombre: "Sebastian",
-    correo: "sebastian@usm.cl",
-    celular: "9560982387",
-    entrada: "8am",
-    salida: "5pm"
-  },
-  {
-    id: 4,
-    casillero: "4",
-    rol: "202123427-3",
-    nombre: "tito",
-    correo: "tito.torrealba@usm.cl",
-    celular: "9560982387",
-    entrada: "10am",
-    salida: "5pm"
-  },
-  {
-    id: 5,
-    casillero: "5",
-    rol: "202173027-3",
-    nombre: "Sin",
-    correo: "sealba@usm.cl",
-    celular: "9560982387",
-    entrada: "10am",
-    salida: "5pm"
-  },
-  {
-    id: 6,
-    casillero: "4",
-    rol: "202123427-3",
-    nombre: "tito",
-    correo: "tito.torrealba@usm.cl",
-    celular: "9560982387",
-    entrada: "10am",
-    salida: "5pm"
-  },
-  {
-    id: 7,
-    casillero: "4",
-    rol: "202123427-3",
-    nombre: "tito",
-    correo: "tito.torrealba@usm.cl",
-    celular: "9560982387",
-    entrada: "10am",
-    salida: "5pm"
-  },
-];
+const getAllActiveUsers = async () => {
+  try {
+    const response = await fetch('/api/active-users');
+    if (response.ok) {
+      const activeUsers = await response.json();
+      return activeUsers;
+    } else {
+      throw new Error('Error al obtener los usuarios activos');
+    }
+  } catch (error) {
+    console.error("[getAllActiveUsers]", error);
+    return null;
+  }
+};
+
+// lol
+const addDummyActiveUser = async () => {
+  try {
+    const randomName = generateRandomName();
+    const randomCellphone = generateRandomCellphone();
+    const randomEmail = generateRandomEmail();
+    const randomLocker = generateRandomLocker();
+
+    const newUser = {
+      casillero: randomLocker,
+      rol: 'Usuario',
+      nombre: randomName,
+      entrada: new Date(),
+      salida: new Date(),
+      celular: randomCellphone,
+      correo: randomEmail
+    };
+
+    const response = await fetch('/api/active-users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newUser)
+    });
+
+    if (response.ok) {
+      const addedUser = await response.json();
+      console.log('Usuario activo añadido:', addedUser);
+    } else {
+      throw new Error('Error al agregar el usuario activo');
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const generateRandomName = () => {
+  const names = ['John', 'Jane', 'Michael', 'Emily', 'David', 'Olivia'];
+  const randomIndex = Math.floor(Math.random() * names.length);
+  return names[randomIndex];
+};
+
+const generateRandomCellphone = () => {
+  const randomDigits = Math.floor(100000000 + Math.random() * 900000000);
+  return String(randomDigits);
+};
+
+const generateRandomEmail = () => {
+  const domains = ['example.com', 'test.com', 'domain.com'];
+  const randomIndex = Math.floor(Math.random() * domains.length);
+  const randomName = generateRandomName().toLowerCase();
+  return `${randomName}@${domains[randomIndex]}`;
+};
+
+const generateRandomLocker = () => {
+  const randomDigits = Math.floor(100 + Math.random() * 900);
+  return String(randomDigits);
+};
+addDummyActiveUser();
+// lolaso
+
+
 
 const loadComponent = (component_name) => {
   Alpine.data(`${component_name}Component`, () => ({
@@ -98,9 +104,10 @@ document.addEventListener('alpine:init', () => {
   loadComponent("penalizedUsers");
   loadComponent("signOut");
 
+
   // Tab activeUsers
   Alpine.data("activeUsers", () => ({
-    data: dummyData,
+    data: [],
 
     retirar: function(row) {
       // id, casillero, rol, nombre, correo, celular, entrada, salida
@@ -110,6 +117,15 @@ document.addEventListener('alpine:init', () => {
     editar: function(row) {
       let row_data = row.__raw;
       console.log("Editar", row_data)
+    },
+
+    async onMount() {
+      const activeUsers = await getAllActiveUsers();
+      activeUsers.forEach( (e) => {
+        e.entrada = new Date(e.entrada).toLocaleTimeString();
+        e.salida = new Date(e.salida).toLocaleTimeString();
+        this.data.push(e);
+      })
     }
 
   }));
