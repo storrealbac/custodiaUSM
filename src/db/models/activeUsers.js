@@ -75,8 +75,8 @@ class ActiveUser {
         if (err) {
           reject(err);
         } else if (numRemoved === 0) {
-          console.log('[activeUsers] No se encontr贸 el usuario activo');
-          reject(new Error('[activeUsers] No se encontr贸 el usuario activo'));
+          console.log('[activeUsers] No se encontro el usuario activo');
+          reject(new Error('[activeUsers] No se encontro el usuario activo'));
         } else {
           console.log('[activeUsers] Usuario eliminado:', this);
           resolve(numRemoved);

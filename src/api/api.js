@@ -3,6 +3,7 @@ const apiRouter = express.Router();
 
 const activeUsers = require("./routes/activeUsers");
 const penaltyUsers = require("./routes/penaltyUsers");
+const historical = require("./routes/historical");
 
 // Ejemplo de ruta en la API
 apiRouter.get('/', (req, res) => {
@@ -13,5 +14,6 @@ apiRouter.get('/', (req, res) => {
 
 apiRouter.use("/penalty-users", penaltyUsers);
 apiRouter.use("/active-users", activeUsers);
+apiRouter.use("/historical", historical);
 
 module.exports = apiRouter;

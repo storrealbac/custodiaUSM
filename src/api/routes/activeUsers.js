@@ -64,7 +64,7 @@ router.put("/:id", async (req, res) => {
 // Ruta para eliminar un usuario activo
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-
+  console.log("[activeUsers] Eliminado usuario: ", id)
   try {
     const activeUser = await ActiveUser.getById(id);
     if (!activeUser) {
