@@ -11,7 +11,7 @@
     x-data="{ activeTab: 'category1'}"
   >
     <nav class="bg-gray-800 ">
-      <div class="container mx-auto grid grid-cols-5 h-10vh ">
+      <div class="container mx-auto grid grid-cols-4 h-10vh ">
         <button
           class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
           @click="activeTab = 'category1'"
@@ -44,13 +44,6 @@
           Descargar informe
         </button>
 
-        <button
-          class="text-white font-bold hover:text-gray-300 focus:outline-none text-xl"
-          @click="activeTab = 'category5'"
-          :class="{ 'text-gray-300': activeTab === 'category5' }"
-        >
-          Cerrar sesion
-        </button>
       </div>
     </nav>
 
@@ -73,9 +66,6 @@
           <div x-html="html_data"></div>
         </div>
 
-        <div id="category5" x-data="signOutComponent" x-show="activeTab === 'category5'">
-          <div x-html="html_data"></div>
-        </div>
       </div>
     </div>
 

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 require("dotenv").config();
 const apiRouter = require('./api/api');
 
+//https://stackoverflow.com/questions/17450412/how-to-create-an-excel-file-with-nodejs
 
 // Configuración de la carpeta pública
 app.use(express.static(path.join(__dirname, 'public')));

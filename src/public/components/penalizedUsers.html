@@ -1,45 +1,63 @@
-<div class="w-screen">
+<div class="w-screen" x-data="penalizedUsers" x-init="onMount()">
     <div class="grid grid-cols-10">
-      <div class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2">
-        ID de penalización
+      <div class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2">
+        Nombre
       </div>
-      <div class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2">
+      <div class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2">
         Rol
       </div>
-      <div class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2">
-        Alumnos
+      <div class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2">
+        Celular
       </div>
       <div class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2">
+        Correo
+      </div>
+      <div class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2">
         Inicio de penalización
       </div>
-      <div class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2">
+      <div class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2">
         Fin de penalización
       </div>
-      <div class="border-b border-gray-300 col-span-2 bg-blue-600 text-white font-bold text-left p-2">
-        Tiempo total de penalización
+
+      <div class="border-b border-gray-300 col-span-1 bg-blue-600 text-white font-bold text-left p-2">
+        Quitar penalización
       </div>
   
       <!-- Todas las filas -->
-      <div class="fila grid grid-cols-10 col-span-10">
-        <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
-          <p>1</p>
+      <template x-for="row in data" :key="row._id">
+        <div class="fila grid grid-cols-10 col-span-10">
+          <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
+            <p x-text="row.nombre"></p>
+          </div>
+          <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
+            <p x-text="row.rol"></p>
+          </div>
+          <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+            <p x-text="row.celular"></p>
+          </div>
+          <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
+            <p x-text="row.correo"></p>
+          </div>
+          <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+            <p x-text="row.inicio_penalizacion"></p>
+          </div>
+          <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
+            <p x-text="row.fin_penalizacion"></p>
+          </div>
+
+          <div
+            class="border-b border-gray-300 border-blue-700 col-span-1 flex justify-center"
+          >
+            <button
+              class="btn bg-blue-500 text-white font-bold text-left p-2 rounded-md"
+              @click="quitar(row)"
+            >
+              Quitar
+            </button>
+          </div>
         </div>
-        <div class="border-b border-gray-300 border-blue-700 col-span-1 p-2">
-          <p>2</p>
-        </div>
-        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
-          <p>3</p>
-        </div>
-        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
-          <p>4</p>
-        </div>
-        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
-          <p>5</p>
-        </div>
-        <div class="border-b border-gray-300 border-blue-700 col-span-2 p-2">
-          <p>6</p>
-        </div>
-      </div>
+      </template>
+
   
     </div>
   </div>

@@ -16,6 +16,23 @@ const eventBus = {
   },
 };
 
+// Función para formatear la fecha en el formato deseado (YYYY-MM-DD HH:mm:ss)
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = padZero(date.getMonth() + 1);
+  const day = padZero(date.getDate());
+  const hours = padZero(date.getHours());
+  const minutes = padZero(date.getMinutes());
+  const seconds = padZero(date.getSeconds());
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+// Función para agregar un cero al inicio si el valor es menor que 10
+function padZero(value) {
+  return value < 10 ? `0${value}` : value;
+}
+
+
 
 const getAllActiveUsers = async () => {
   try {
@@ -29,6 +46,22 @@ const getAllActiveUsers = async () => {
   } catch (error) {
     console.error("[getAllActiveUsers]", error);
     return null;
+  }
+};
+
+async function getAllPenalizedUsers() {
+  try {
+    const response = await fetch('/api/penalty-users');
+    if (!response.ok) {
+      throw new Error('Error al obtener los usuarios penalizados');
+    }
+    const penalizedUsers = await response.json();
+    console.log(penalizedUsers);
+    return penalizedUsers;
+  } catch (error) {
+    console.error(error);
+    // Manejar el error al obtener los usuarios penalizados
+    return [];
   }
 };
 
@@ -59,6 +92,49 @@ document.addEventListener("alpine:init", () => {
   loadComponent("penalizedUsers");
   loadComponent("signOut");
 
+  // Tab penalizedUsers
+  Alpine.data("penalizedUsers", () => {
+    return {
+      data: [],
+  
+      async updateTable() {
+        this.data = await getAllPenalizedUsers();
+      },
+  
+      async onMount() {
+        eventBus.$on("penalizedUserAdded", () => {
+          this.updateTable();
+        });
+  
+        eventBus.$on("updatePenalizedUsersTable", () => {
+          this.updateTable();
+        });
+  
+        this.updateTable();
+      },
+
+      quitar: function(row) {
+        if (confirm("¿Estás seguro de que deseas quitar a esta persona de la lista de penalizados?")) {
+          const userId = row["id"];
+          fetch(`/api/penalty-users/${userId}`, { method: "DELETE" })
+            .then(response => {
+              if (response.ok) {
+                // Actualizar la tabla después de eliminar al usuario
+                this.updateTable();
+              } else {
+                throw new Error('Error al eliminar al usuario de la lista de penalizados');
+              }
+            })
+            .catch(error => {
+              console.error(error);
+              // Manejar el error al eliminar al usuario de la lista de penalizados
+            });
+        }
+      }
+    };
+  });
+  
+
   // Tab activeUsers
   Alpine.data("activeUsers", () => ({
     data: [],
@@ -66,6 +142,10 @@ document.addEventListener("alpine:init", () => {
     retirar: function (row) {
       const userId = row["_id"];
     
+      // Solicitar confirmación al usuario
+      const confirmRetirar = window.confirm('¿Estás seguro de que deseas retirar este usuario?');
+      if (!confirmRetirar) return;
+
       // Realizar la petición para retirar al usuario de la lista de usuarios activos
       fetch(`/api/active-users/${userId}`, { method: 'DELETE' })
         .then(response => {
@@ -103,11 +183,103 @@ document.addEventListener("alpine:init", () => {
         });
     },
     
+    eliminar: function (row) {
+      const userId = row["_id"];
+      
+      // Solicitar confirmación al usuario
+      const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este usuario?');
+      
+      if (confirmDelete) {
+        // Realizar la petición para eliminar al usuario de la lista de usuarios activos
+        fetch(`/api/active-users/${userId}`, { method: 'DELETE' })
+          .then(response => {
+            console.log(response);
+            if (response.ok) {
+              // Eliminar el usuario del arreglo de datos en el cliente
+              const userIndex = this.data.findIndex(user => user.id === userId);
+              this.data.splice(userIndex, 1);
+            } else {
+              throw new Error('Error al retirar al usuario de la lista de usuarios activos');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            // Manejar el error al retirar al usuario de la lista de usuarios activos
+          });
+      }
+    },    
 
     editar: function (row) {
-      let row_data = row.__raw;
-      console.log("Editar", row_data);
+      // Not today bby
     },
+
+    penalizar: function (row) {
+      const userId = row["_id"];
+    
+      const horas = window.prompt("Ingrese la cantidad de horas para la penalización:");
+    
+      // Verificar si se ingresó una cantidad de horas válida
+      if (!horas || isNaN(horas)) {
+        console.log('Cantidad de horas inválida.');
+        return;
+      }
+    
+      const fechaActual = new Date();
+      const inicioPenalizacion = fechaActual.getTime();
+      const finalPenalizacion = fechaActual.getTime() + (horas * 3600000); // Convertir horas a milisegundos
+    
+      console.log("row ->", row);
+
+      const usuarioPenalizado = {
+        id: row["_id"],
+        casillero: row.casillero,
+        rol: row.rol,
+        nombre: row.nombre,
+        correo: row.correo,
+        celular: row.celular,
+        inicio_penalizacion: formatDate(new Date(inicioPenalizacion)),
+        fin_penalizacion: formatDate(new Date(finalPenalizacion))
+      };
+    
+      console.log(usuarioPenalizado);
+
+      fetch(`/api/active-users/${userId}`, { method: 'DELETE' })
+        .then(response => {
+          console.log(response);
+          if (response.ok) {
+            // Eliminar el usuario del arreglo de datos en el cliente
+            const userIndex = this.data.findIndex(user => user.id === userId);
+            this.data.splice(userIndex, 1);
+    
+            // Realizar la petición para agregar el usuario a los usuarios penalizados
+            fetch('/api/penalty-users', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(usuarioPenalizado)
+            })
+              .then(response => {
+                if (response.ok) {
+                  // Emitir el evento para actualizar la tabla de usuarios activos
+                  eventBus.$emit('updateActiveUsersTable');
+                  eventBus.$emit('updatePenalizedUsersTable');
+                } else {
+                  throw new Error('Error al agregar el usuario a los usuarios penalizados');
+                }
+              })
+              .catch(error => {
+                console.error(error);
+                // Manejar el error al agregar el usuario a los usuarios penalizados
+              });
+          } else {
+            throw new Error('Error al retirar al usuario de la lista de usuarios activos');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          // Manejar el error al retirar al usuario de la lista de usuarios activos
+        });
+    },
+    
 
     async updateTable() {
       this.data = [];

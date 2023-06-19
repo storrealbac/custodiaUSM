@@ -69,6 +69,25 @@ class ActiveUser {
     });
   }
 
+  static deleteById(id) {
+    console.log("_id ->", id);
+
+    return new Promise((resolve, reject) => {
+      activeUsersDB.remove({ _id: id }, {}, (err, numRemoved) => {
+        if (err) {
+          reject(err);
+        } else if (numRemoved === 0) {
+          console.log('[activeUsers] No se encontró el usuario activo');
+          reject(new Error('[activeUsers] No se encontró el usuario activo'));
+        } else {
+          console.log('[activeUsers] Usuario eliminado:', id);
+          resolve(numRemoved);
+        }
+      });
+    });
+  }
+
+    /*
   delete() {
     return new Promise((resolve, reject) => {
       activeUsersDB.remove({ _id: this._id }, {}, (err, numRemoved) => {
@@ -84,7 +103,7 @@ class ActiveUser {
       });
     });
   }
-
+    */
   getEntradaFormatted() {
     const formattedEntrada = moment(this.entrada).format('YYYY-MM-DD HH:mm:ss');
     console.log('[activeUsers] Entrada formateada:', formattedEntrada);

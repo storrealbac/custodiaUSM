@@ -5,9 +5,9 @@ const PenaltyUser = require("../../db/models/penaltyUsers");
 
 // Ruta para guardar un nuevo usuario penalizado
 router.post('/', async (req, res) => {
-  const { n_penalizacion, rol, nombre, inicio_penalizacion, fin_penalizacion } = req.body;
+  const { id, casillero, rol, nombre, correo, celular, inicio_penalizacion, fin_penalizacion } = req.body;
 
-  const penaltyUser = new PenaltyUser(n_penalizacion, rol, nombre, inicio_penalizacion, fin_penalizacion);
+  const penaltyUser = new PenaltyUser(id, casillero, rol, nombre, correo, celular, inicio_penalizacion, fin_penalizacion);
 
   try {
     const savedUser = await penaltyUser.save();
@@ -16,6 +16,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Ruta para obtener todos los usuarios penalizados
 router.get('/', async (req, res) => {
@@ -49,15 +50,18 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
+  console.log("ID -> ", id);
   try {
     const user = await PenaltyUser.getById(id);
+    console.log(user);
     if (!user) {
       res.status(404).json({ error: 'Usuario penalizado no encontrado' });
     } else {
-      await user.delete();
+      await PenaltyUser.deleteById(id);
       res.json({ message: 'Usuario eliminado correctamente' });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 });

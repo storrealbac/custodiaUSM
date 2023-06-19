@@ -41,6 +41,8 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+
+  
 });
 
 // Ruta para actualizar un campo de un usuario activo
@@ -70,7 +72,7 @@ router.delete("/:id", async (req, res) => {
     if (!activeUser) {
       res.status(404).json({ error: "Usuario activo no encontrado" });
     } else {
-      await activeUser.delete();
+      ActiveUser.deleteById(id);
       res.json({ message: "Usuario eliminado correctamente" });
     }
   } catch (error) {
