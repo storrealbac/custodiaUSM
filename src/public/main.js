@@ -31,8 +31,6 @@ function padZero(value) {
   return value < 10 ? `0${value}` : value;
 }
 
-
-
 const getAllActiveUsers = async () => {
   try {
     const response = await fetch("/api/active-users");
