@@ -12,7 +12,10 @@ class HistoricalUser {
     this.correo = correo;
 
     const date = moment();
-    this.dia = date.format('DD/MM/YYYY');
+    this.dia = date.format('DD-MM-YYYY');
+
+    this.epoch_dia = moment().valueOf();
+
   }
 
   save() {
@@ -54,21 +57,20 @@ class HistoricalUser {
     });
   }
 
-  static getUsersBetweenDates(startDate, endDate) {
-    return new Promise((resolve, reject) => {
-      const start = moment(startDate, 'YYYY-MM-DD').startOf('day').toDate();
-      const end = moment(endDate, 'YYYY-MM-DD').endOf('day').toDate();
+  static getAllBetweenDates(startDate, endDate) {
 
-      historicalDB.find({ entrada: { $gte: start, $lte: end } }, (err, historicalUsers) => {
+    return new Promise((resolve, reject) => {
+      historicalDB.find({ epoch_dia: { $gte: startDate, $lte: endDate } }, (err, historicalUsers) => {
         if (err) {
           reject(err);
         } else {
-          console.log('[historicalUsers] Usuarios encontrados entre fechas:', startDate, endDate);
+          console.log('[historicalUsers] Usuarios encontrados entre las fechas:', historicalUsers);
           resolve(historicalUsers);
         }
       });
     });
   }
+  
 
   updateField(fieldName, value) {
     return new Promise((resolve, reject) => {

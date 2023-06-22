@@ -15,7 +15,6 @@ const eventBus = {
     }
   },
 };
-
 // Función para formatear la fecha en el formato deseado (YYYY-MM-DD HH:mm:ss)
 function formatDate(date) {
   const year = date.getFullYear();
@@ -242,6 +241,25 @@ document.addEventListener("alpine:init", () => {
       };
     
       console.log(usuarioPenalizado);
+
+      // Realizar la petición para agregar el usuario a los registros históricos
+      fetch('/api/historical', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(row)
+      })
+      .then(response => {
+        if (response.ok) {
+          // Emitir el evento para actualizar la tabla de usuarios activos
+          eventBus.$emit('updateActiveUsersTable');
+        } else {
+          throw new Error('Error al agregar el usuario a los registros históricos');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        // Manejar el error al agregar el usuario a los registros históricos
+      });
 
       fetch(`/api/active-users/${userId}`, { method: 'DELETE' })
         .then(response => {

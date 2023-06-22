@@ -30,7 +30,7 @@
   <div class="flex justify-center mt-6">
     <button
       x-bind:disabled="fromDate === '' || toDate === ''"
-      x-on:click="alert('Desde: ' + fromDate + ', Hasta: ' + toDate)"
+      x-on:click="window.location.href = `http://localhost:3000/api/historical/download-informe?startDate=${fromDate}&endDate=${toDate}`"
       class="bg-blue-600 text-white font-bold py-4 px-8 rounded-md focus:outline-none"
     >
       Descargar informe
