@@ -2,7 +2,7 @@ const moment = require('moment');
 const { historicalDB } = require('../database');
 
 class HistoricalUser {
-  constructor(casillero, rol, nombre, entrada, salida, celular, correo) {
+  constructor(casillero, rol, nombre, entrada, salida, celular, correo, observaciones) {
     this.casillero = casillero;
     this.rol = rol;
     this.nombre = nombre;
@@ -10,6 +10,7 @@ class HistoricalUser {
     this.salida = salida;
     this.celular = celular;
     this.correo = correo;
+    this.observaciones = observaciones;
 
     const date = moment();
     this.dia = date.format('DD-MM-YYYY');

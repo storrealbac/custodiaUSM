@@ -3,7 +3,7 @@ const moment = require('moment');
 const { activeUsersDB } = require('../database');
 
 class ActiveUser {
-  constructor(casillero, rol, nombre, entrada, salida, celular, correo) {
+  constructor(casillero, rol, nombre, entrada, salida, celular, correo, observaciones) {
     this.casillero = casillero;
     this.rol = rol;
     this.nombre = nombre;
@@ -11,6 +11,7 @@ class ActiveUser {
     this.salida = salida;
     this.celular = celular;
     this.correo = correo;
+    this.observaciones = observaciones;
   }
 
   save() {

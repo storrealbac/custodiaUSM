@@ -213,24 +213,23 @@ document.addEventListener("alpine:init", () => {
     penalizar: function (row) {
       const userId = row["_id"];
     
-      const horas = window.prompt("Ingrese la cantidad de horas para la penalización:");
+      const dias = window.prompt("Ingrese la cantidad de dias para la penalización:");
     
       // Verificar si se ingresó una cantidad de horas válida
-      if (!horas || isNaN(horas)) {
-        console.log('Cantidad de horas inválida.');
+      if (!dias || isNaN(dias)) {
+        console.log('Cantidad de dias inválida.');
         return;
       }
     
       const fechaActual = new Date();
       const inicioPenalizacion = fechaActual.getTime();
-      const finalPenalizacion = fechaActual.getTime() + (horas * 3600000); // Convertir horas a milisegundos
+      const finalPenalizacion = fechaActual.getTime() + (dias * 24 * 60 * 60 * 1000); // Convertir horas a milisegundos
     
       console.log("row ->", row);
 
       const usuarioPenalizado = {
         id: row["_id"],
         casillero: row.casillero,
-        rol: row.rol,
         nombre: row.nombre,
         correo: row.correo,
         celular: row.celular,
@@ -296,13 +295,19 @@ document.addEventListener("alpine:init", () => {
         });
     },
     
-
     async updateTable() {
       this.data = [];
       const activeUsers = await getAllActiveUsers();
       activeUsers.forEach((e) => {
         this.data.push(e);
       });
+
+      activeUsers.sort(function(a, b) {
+        if (a.casillero < b.casillero) return -1;
+        else if (a.casillero > b.casillero) return 1;
+        return 0;
+      });
+
     },
 
     async onMount() {
@@ -335,11 +340,10 @@ document.addEventListener("alpine:init", () => {
 
   Alpine.data("addUserForm", () => ({
     nombre: "",
-    rol: "",
     casillero: "",
     entrada: "",
     salida: "",
-    observacion: "No hay observaciones",
+    observaciones: "No hay observaciones",
     celular: "",
     correo: "",
 
@@ -349,7 +353,6 @@ document.addEventListener("alpine:init", () => {
     submitForm: function () {
       let is_invalid = false;
       let missing = "Son invalidos los siguientes campos: ";
-      rol
       if (!this.verifyEmail()) {
         missing +=
           "\n - Correo invalido, no cumple con el formato de un correo";
@@ -364,11 +367,10 @@ document.addEventListener("alpine:init", () => {
       // Realizar la petición para agregar el usuario
       const newUser = {
         nombre: this.nombre,
-        rol: this.rol,
         casillero: this.casillero,
         entrada: this.entrada,
         salida: this.salida,
-        observacion: this.observacion,
+        observaciones: this.observaciones,
         correo: this.correo,
         celular: this.celular,
       };
@@ -399,11 +401,10 @@ document.addEventListener("alpine:init", () => {
 
       // Resetear los campos
       this.nombre = "";
-      this.rol = "";
       this.casillero = "";
       this.entrada = "";
       this.salida = "";
-      this.observacion = "No hay observaciones";
+      this.observaciones = "No hay observaciones";
       this.correo = "";
       this.celular = "";
     },

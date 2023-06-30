@@ -8,9 +8,9 @@ const HistoricalUser = require('../../db/models/historical');
 
 // Ruta para guardar un nuevo usuario histórico
 router.post('/', async (req, res) => {
-  const { casillero, rol, nombre, entrada, salida, celular, correo } = req.body;
+  const { casillero, rol, nombre, entrada, salida, celular, correo, observaciones } = req.body;
 
-  const historicalUser = new HistoricalUser(casillero, rol, nombre, entrada, salida, celular, correo);
+  const historicalUser = new HistoricalUser(casillero, rol, nombre, entrada, salida, celular, correo, observaciones);
 
   try {
     const savedUser = await historicalUser.save();
@@ -53,7 +53,7 @@ router.get("/download-informe", async (req, res) => {
   const { startDate, endDate } = req.query;
 
   const epoch_start = moment(startDate).valueOf();
-  const epoch_end = moment(endDate).valueOf();
+  const epoch_end = moment(endDate).valueOf() + (24 * 60 * 60);
 
   const retrieved_users = await HistoricalUser.getAllBetweenDates(epoch_start, epoch_end);
 
@@ -71,16 +71,17 @@ router.get("/download-informe", async (req, res) => {
   const oddStyle = excel_workbook.createStyle({ fill: { type: 'pattern', patternType: 'solid', fgColor: "E2E2E2" } });
   const evenStyle = excel_workbook.createStyle({ fill: { type: 'pattern', patternType: 'solid', fgColor: "F2F2F2" } });
 
-  const MAX_COL = 7;
+  const MAX_COL = 8;
   
   // Base
-  sheet.cell(1, 1).string("Rol");
+  sheet.cell(1, 1).string("Casillero");
   sheet.cell(1, 2).string("Nombre");
   sheet.cell(1, 3).string("Celular");
   sheet.cell(1, 4).string("Correo");
   sheet.cell(1, 5).string("Entrada");
   sheet.cell(1, 6).string("Salida");
   sheet.cell(1, 7).string("Dia");
+  sheet.cell(1, 8).string("Observaciones");
 
   sheet.column(1).setWidth(15);
   sheet.column(2).setWidth(20);
@@ -89,6 +90,7 @@ router.get("/download-informe", async (req, res) => {
   sheet.column(5).setWidth(15);
   sheet.column(6).setWidth(15);
   sheet.column(7).setWidth(15);
+  sheet.column(8).setWidth(40);
   
 
   for (let col = 1; col <= MAX_COL; col++)
@@ -103,6 +105,7 @@ router.get("/download-informe", async (req, res) => {
     sheet.cell(row, 5).string(user["entrada"]);
     sheet.cell(row, 6).string(user["salida"]);
     sheet.cell(row, 7).string(user["dia"]);
+    sheet.cell(row, 8).string(user["observaciones"]);
 
     // Aplicar tonalidades de azul diferentes a posiciones pares e impares
     if (row & 1)

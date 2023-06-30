@@ -5,9 +5,9 @@ const ActiveUser = require("../../db/models/activeUsers");
 
 // Ruta para guardar un nuevo usuario activo
 router.post("/", async (req, res) => {
-  const { casillero, rol, nombre, entrada, salida, celular, correo } = req.body;
+  const { casillero, rol, nombre, entrada, salida, celular, correo, observaciones } = req.body;
 
-  const activeUser = new ActiveUser(casillero, rol, nombre, entrada, salida, celular, correo);
+  const activeUser = new ActiveUser(casillero, rol, nombre, entrada, salida, celular, correo, observaciones);
 
   try {
     const newActiveUser = await activeUser.save();
